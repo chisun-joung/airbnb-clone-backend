@@ -17,4 +17,11 @@ class HouseAdmin(admin.ModelAdmin):
     search_fields = (
         'address',
     )
+    fields = (
+        'name',
+        'address',
+        ("price_per_night", "pets_allowed"),
+    )
+    list_display_links = ("name", "address")
+    list_editable = ("price_per_night", "pets_allowed")
     
