@@ -8,7 +8,8 @@ class HouseAdmin(admin.ModelAdmin):
         'name', 
         'price_per_night', 
         'address',
-        'pets_allowed'
+        'pets_allowed',
+        'owner'
     )
     list_filter = (
         'price_per_night',
@@ -21,6 +22,7 @@ class HouseAdmin(admin.ModelAdmin):
         'name',
         'address',
         ("price_per_night", "pets_allowed"),
+        'owner',
     )
     list_display_links = ("name", "address")
     list_editable = ("price_per_night", "pets_allowed")
