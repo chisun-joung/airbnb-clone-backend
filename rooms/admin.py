@@ -10,6 +10,7 @@ class RoomAdmin(admin.ModelAdmin):
         "price",
         "kind",
         "total_amenties",
+        "rating",
         "owner",
         "created_at",
     )
