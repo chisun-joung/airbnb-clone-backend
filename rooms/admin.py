@@ -23,7 +23,11 @@ class RoomAdmin(admin.ModelAdmin):
         "created_at",
         "updated_at",
     )
-    verbose_name_plural = "Amenities"
+    search_fields = (
+        "name",
+        "price",
+        "owner__username",
+    )
 
 
 @admin.register(Amenity)
