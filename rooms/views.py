@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound, NotAuthenticated, ParseError
 from rest_framework.status import HTTP_204_NO_CONTENT
+from django.db import transaction
 from .models import Amenity, Room
 from .serializer import AmenitySerializer, RoomsListSerializer, RoomDetailSerializer
 from categories.models import Category
@@ -82,21 +83,23 @@ class Rooms(APIView):
                         raise ParseError("Category kind should be room")
                 except Category.DoesNotExist:
                     raise ParseError("Category does not exist")
-                room = serializer.save(
-                    owner=request.user,
-                    category=category,
-                )
-                amenities = request.data.get("amenities")
-                for amenity_pk in amenities:
-                    try:
-                        amenity = Amenity.objects.get(pk=amenity_pk)
-                        room.amenities.add(amenity)
-                    except Amenity.DoesNotExist:
-                        pass
 
-                return Response(
-                    RoomDetailSerializer(room).data,
-                )
+                try:
+                    with transaction.atomic():
+                        room = serializer.save(
+                            owner=request.user,
+                            category=category,
+                        )
+                        amenities = request.data.get("amenities")
+                        for amenity_pk in amenities:
+                            amenity = Amenity.objects.get(pk=amenity_pk)
+                            room.amenities.add(amenity)
+                        serializer = RoomDetailSerializer(room)
+                        return Response(
+                            serializer.data,
+                        )
+                except:
+                    raise ParseError("Can't create room")
             else:
                 return Response(serializer.errors)
         else:
