@@ -86,6 +86,14 @@ class Rooms(APIView):
                     owner=request.user,
                     category=category,
                 )
+                amenities = request.data.get("amenities")
+                for amenity_pk in amenities:
+                    try:
+                        amenity = Amenity.objects.get(pk=amenity_pk)
+                        room.amenities.add(amenity)
+                    except Amenity.DoesNotExist:
+                        pass
+
                 return Response(
                     RoomDetailSerializer(room).data,
                 )
