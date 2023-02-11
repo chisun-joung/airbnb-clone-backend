@@ -9,7 +9,7 @@ from rest_framework.exceptions import (
 from rest_framework.status import HTTP_204_NO_CONTENT
 from django.db import transaction
 from .models import Amenity, Room
-from .serializer import AmenitySerializer, RoomsListSerializer, RoomDetailSerializer
+from .serializers import AmenitySerializer, RoomsListSerializer, RoomDetailSerializer
 from categories.models import Category
 
 
