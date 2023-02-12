@@ -40,7 +40,7 @@ class RoomDetailSerializer(serializers.ModelSerializer):
         return False
 
 
-class RoomsListSerializer(serializers.ModelSerializer):
+class RoomListSerializer(serializers.ModelSerializer):
 
     rating = serializers.SerializerMethodField()
     is_owner = serializers.SerializerMethodField()

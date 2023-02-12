@@ -9,7 +9,7 @@ from rest_framework.exceptions import (
 from rest_framework.status import HTTP_204_NO_CONTENT
 from django.db import transaction
 from .models import Amenity, Room
-from .serializers import AmenitySerializer, RoomsListSerializer, RoomDetailSerializer
+from .serializers import AmenitySerializer, RoomListSerializer, RoomDetailSerializer
 from reviews.serializers import ReviewSerializer
 from categories.models import Category
 from django.conf import settings
@@ -75,7 +75,7 @@ class Rooms(APIView):
 
     def get(self, request):
         all_rooms = Room.objects.all()
-        serializer = RoomsListSerializer(
+        serializer = RoomListSerializer(
             all_rooms,
             many=True,
             context={"request": request},
