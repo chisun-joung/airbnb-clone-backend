@@ -6,6 +6,7 @@ from categories.serializers import CategorySerializer
 from reviews.serializers import ReviewSerializer
 from medias.serializers import PhotoSerializer
 from wishlists.models import Wishlist
+from bookings.models import Booking
 
 
 class AmenitySerializer(serializers.ModelSerializer):
@@ -105,3 +106,15 @@ class CreateRoomBookingSerializer(serializers.ModelSerializer):
         if now > value:
             raise serializers.ValidationError("Check out date is in the past")
         return value
+
+    def validate(self, data):
+        if data["check_out"] <= data["check_in"]:
+            raise serializers.ValidationError(
+                "Check out date must be after check in date"
+            )
+        if Booking.objects.filter(
+            check_in__lte=data["check_out"],
+            check_out__gte=data["check_in"],
+        ).exists():
+            raise serializers.ValidationError("Room is not available")
+        return data
