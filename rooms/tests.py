@@ -1,5 +1,6 @@
 from rest_framework.test import APITestCase
 from . import models
+from users.models import User
 
 
 class TestAmenities(APITestCase):
@@ -161,3 +162,18 @@ class TestAmenity(APITestCase):
             404,
             "Status code should be 404",
         )
+
+
+class TestRooms(APITestCase):
+    def setUp(self):
+        user = User.objects.create(
+            username="test_user",
+        )
+        user.set_password("test_password")
+        user.save()
+        self.user = user
+
+    def test_create_room(self):
+        response = self.client.post("/api/v1/rooms/")
+        self.assertEqual(response.status_code, 403)
+        self.client.force_login(self.user)
