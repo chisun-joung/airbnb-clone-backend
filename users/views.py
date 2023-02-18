@@ -9,7 +9,6 @@ from . import serializers
 
 
 class Me(APIView):
-
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -59,7 +58,6 @@ class PublicUser(APIView):
 
 
 class ChangePassword(APIView):
-
     permission_classes = [IsAuthenticated]
 
     def put(self, request):
@@ -95,7 +93,6 @@ class LogIn(APIView):
 
 
 class LogOut(APIView):
-
     permission_classes = [IsAuthenticated]
 
     def post(self, request):

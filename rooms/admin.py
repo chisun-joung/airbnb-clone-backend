@@ -11,7 +11,6 @@ def set_price_to_zero(model_admin, request, rooms):
 
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
-
     actions = (set_price_to_zero,)
     list_display = (
         "name",
@@ -40,7 +39,6 @@ class RoomAdmin(admin.ModelAdmin):
 
 @admin.register(Amenity)
 class AmenityAdmin(admin.ModelAdmin):
-
     list_display = (
         "name",
         "description",
