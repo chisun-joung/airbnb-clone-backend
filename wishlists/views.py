@@ -32,7 +32,6 @@ class Wishlists(APIView):
 
 
 class WishlistDetail(APIView):
-
     permission_classes = (IsAuthenticated,)
 
     def get_object(self, pk, user):

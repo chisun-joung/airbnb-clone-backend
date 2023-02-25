@@ -52,7 +52,6 @@ class RoomDetailSerializer(serializers.ModelSerializer):
 
 
 class RoomListSerializer(serializers.ModelSerializer):
-
     rating = serializers.SerializerMethodField()
     is_owner = serializers.SerializerMethodField()
     photos = PhotoSerializer(
@@ -83,7 +82,6 @@ class RoomListSerializer(serializers.ModelSerializer):
 
 
 class CreateRoomBookingSerializer(serializers.ModelSerializer):
-
     check_in = serializers.DateField()
     check_out = serializers.DateField()
 

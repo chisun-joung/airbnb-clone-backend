@@ -4,7 +4,6 @@ from .models import Booking
 
 
 class CreateRoomBookingSerializer(serializers.ModelSerializer):
-
     check_in = serializers.DateField()
     check_out = serializers.DateField()
 
