@@ -22,4 +22,5 @@ class Query:
 class Mutation:
     add_room: typing.Optional[types.RoomType] = strawberry.mutation(
         resolver=mutations.add_room,
+        permission_classes=[OnlyLoggedIn],
     )
