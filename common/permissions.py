@@ -6,5 +6,6 @@ import typing
 class OnlyLoggedIn(BasePermission):
     message = "You must be logged in to see this."
 
-    def has_permission(self, source: typing.Any, info: Info):
+    def has_permission(self, source: typing.Any, info: Info, **kwargs):
+        print(info.context)
         return info.context.request.user.is_authenticated
