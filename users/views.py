@@ -42,7 +42,6 @@ class Users(APIView):
         serializer = serializers.PrivateUserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
-            user.set_password(password)
             user.save()
             serializer = serializers.PrivateUserSerializer(user)
             return Response(serializer.data)
@@ -70,7 +69,6 @@ class ChangePassword(APIView):
         if not old_password or not new_password:
             raise ParseError
         if user.check_password(old_password):
-            user.set_password(new_password)
             user.save()
             return Response(status=status.HTTP_200_OK)
         else:
@@ -208,6 +206,33 @@ class KakaoLogIn(APIView):
                 user.set_unusable_password()
                 user.save()
                 login(request, user)
+                return Response(status=status.HTTP_200_OK)
+        except Exception:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class SignUp(APIView):
+    def post(self, request):
+        try:
+            username = request.data.get("username")
+            password = request.data.get("password")
+            email = request.data.get("email")
+            name = request.data.get("name")
+            if not username or not password or not email or not name:
+                raise ParseError
+
+            try:
+                user = User.objects.get(username=username)
+                user = User.objects.get(email=email)
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+            except User.DoesNotExist:
+                user = User.objects.create_user(
+                    username=username,
+                    password=password,
+                    email=email,
+                    name=name,
+                )
+                user.save()
                 return Response(status=status.HTTP_200_OK)
         except Exception:
             return Response(status=status.HTTP_400_BAD_REQUEST)
