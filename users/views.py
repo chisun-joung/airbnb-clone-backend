@@ -1,5 +1,6 @@
 import jwt
 from django.contrib.auth import authenticate, login, logout
+import requests
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -102,7 +103,7 @@ class LogOut(APIView):
         return Response({"ok": "bye!"})
 
 
-class JWTLogin(APIView):
+class JWTLogIn(APIView):
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
@@ -122,3 +123,47 @@ class JWTLogin(APIView):
             return Response({"token": token})
         else:
             return Response({"error": "wrong password"})
+
+
+class GithubLogIn(APIView):
+    def post(self, request):
+        try:
+            code = request.data.get("code")
+            access_token = requests.post(
+                f"https://github.com/login/oauth/access_token?code={code}&client_id=8a93425efda17e77961c&client_secret={settings.GH_SECRET}",
+                headers={"Accept": "application/json"},
+            )
+            access_token = access_token.json().get("access_token")
+            user_data = requests.get(
+                "https://api.github.com/user",
+                headers={
+                    "Authorization": f"Bearer {access_token}",
+                    "Accept": "application/json",
+                },
+            )
+            user_data = user_data.json()
+            user_emails = requests.get(
+                "https://api.github.com/user/emails",
+                headers={
+                    "Authorization": f"Bearer {access_token}",
+                    "Accept": "application/json",
+                },
+            )
+            user_emails = user_emails.json()
+            try:
+                user = User.objects.get(email=user_emails[0].get("email"))
+                login(request, user)
+                return Response(status=status.HTTP_200_OK)
+            except User.DoesNotExist:
+                user = User.objects.create(
+                    email=user_emails[0].get("email"),
+                    username=user_data.get("login"),
+                    name=user_data.get("name"),
+                    avatar=user_data.get("avatar_url"),
+                )
+                user.set_unusable_password()
+                user.save()
+                login(request, user)
+                return Response(status=status.HTTP_200_OK)
+        except Exception:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
