@@ -69,6 +69,7 @@ class ChangePassword(APIView):
         if not old_password or not new_password:
             raise ParseError
         if user.check_password(old_password):
+            user.set_password(new_password)
             user.save()
             return Response(status=status.HTTP_200_OK)
         else:
