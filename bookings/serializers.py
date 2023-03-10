@@ -39,7 +39,8 @@ class CreateRoomBookingSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 "Those (or some) of those dates are already taken."
             )
-        return data 
+        return data
+
 
 class PublicBookingSerializer(serializers.ModelSerializer):
     class Meta:
