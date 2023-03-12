@@ -31,7 +31,10 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = "RENDER" not in os.environ
 
-ALLOWED_HOSTS = ["localhost"]
+ALLOWED_HOSTS = [
+    "localhost",
+    "backend.csjoung.xyz",
+]
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
 if RENDER_EXTERNAL_HOSTNAME:
@@ -195,6 +198,8 @@ CORS_ALLOW_CREDENTIALS = True
 GH_SECRET = env("GH_SECRET")
 
 if not DEBUG:
+    SESSION_COOKIE_DOMAIN = ".csjoung.xyz"
+    CSRF_COOKIE_DOMAIN = ".csjoung.xyz"
     sentry_sdk.init(
         dsn="https://c860ef952a814bf1841b76a0d47a7ca9@o4504824171659264.ingest.sentry.io/4504824174411776",
         integrations=[
