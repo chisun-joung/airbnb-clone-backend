@@ -190,9 +190,9 @@ if DEBUG:
     CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:3000"]
     REDIRECT_URL = "http://127.0.0.1:3000"
 else:
-    CORS_ALLOWED_ORIGINS = ["https://airbnb-frontend-ncrf.onrender.com"]
-    CSRF_TRUSTED_ORIGINS = ["https://airbnb-frontend-ncrf.onrender.com"]
-    REDIRECT_URL = "https://airbnb-frontend-ncrf.onrender.com"
+    CORS_ALLOWED_ORIGINS = ["https://csjoung.xyz"]
+    CSRF_TRUSTED_ORIGINS = ["https://csjoung.xyz"]
+    REDIRECT_URL = "https://csjoung.xyz"
 CORS_ALLOW_CREDENTIALS = True
 
 GH_SECRET = env("GH_SECRET")
